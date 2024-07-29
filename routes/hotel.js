@@ -3,17 +3,8 @@ const router = express.Router();
 const { Pool } = require("pg");
 const config = require("../config.json");
 const pool = new Pool(config.database);
-// require("dotenv").config();
 
-// const pool = new Pool({
-//     user: process.env.DB_USER,
-//     host: process.env.DB_HOST,
-//     database: process.env.DB_NAME,
-//     password: process.env.DB_PASSWORD,
-//     port: process.env.DB_PORT,
-// });
-
-router.get("/hotel/:slug", async (req, res) => {
+router.get("/:slug", async (req, res) => {
     try {
         const { slug } = req.params;
         console.log("Fetching hotel with slug:", slug);
@@ -38,12 +29,10 @@ router.get("/hotel/:slug", async (req, res) => {
     } catch (error) {
         console.error("Error fetching hotel details:", error);
         if (error.code === "42P01") {
-            // undefined_table
             res.status(500).json({
                 message: "Database error: Table not found",
             });
         } else if (error.code === "28P01") {
-            // invalid_password
             res.status(500).json({
                 message: "Database error: Authentication failed",
             });
@@ -56,7 +45,7 @@ router.get("/hotel/:slug", async (req, res) => {
     }
 });
 
-router.get("/hotels", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const result = await pool.query("SELECT * FROM hotel_details");
         res.status(200).json(result.rows);
@@ -69,7 +58,7 @@ router.get("/hotels", async (req, res) => {
     }
 });
 
-router.post("/hotel", async (req, res) => {
+router.post("/", async (req, res) => {
     try {
         const {
             slug,
@@ -120,7 +109,7 @@ router.post("/hotel", async (req, res) => {
     }
 });
 
-router.put("/hotel/:slug", async (req, res) => {
+router.put("/:slug", async (req, res) => {
     try {
         const { slug } = req.params;
         const {
@@ -177,7 +166,7 @@ router.put("/hotel/:slug", async (req, res) => {
     }
 });
 
-router.delete("/hotel/:slug", async (req, res) => {
+router.delete("/:slug", async (req, res) => {
     try {
         const { slug } = req.params;
 
