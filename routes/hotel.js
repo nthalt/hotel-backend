@@ -35,6 +35,31 @@ router.get("/hotel/:slug", async (req, res) => {
         res.status(200).json(hotel);
     } catch (error) {
         console.error("Error fetching hotel details:", error);
+        if (error.code === "42P01") {
+            // undefined_table
+            res.status(500).json({
+                message: "Database error: Table not found",
+            });
+        } else if (error.code === "28P01") {
+            // invalid_password
+            res.status(500).json({
+                message: "Database error: Authentication failed",
+            });
+        } else {
+            res.status(500).json({
+                message: "Internal server error",
+                error: error.message,
+            });
+        }
+    }
+});
+
+router.get("/hotels", async (req, res) => {
+    try {
+        const result = await pool.query("SELECT * FROM hotel_details");
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error("Error fetching hotels:", error);
         res.status(500).json({
             message: "Internal server error",
             error: error.message,
