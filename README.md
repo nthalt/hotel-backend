@@ -1,5 +1,16 @@
-copy config.json.example to your own config.json and fill your own credential values.
+# Installation
+```bash
+git clone https://github.com/nthalt/hotel-backend.git
+```
+```bash
+cd hotel-backend
+```    
+```bash
+npm install
+```    
 
+# Config JSON setup
+Create a file named `config.json` in project root and copy your own configuration values into it according to the format provided in `config.example.json`
 # Hotel API Testing Instructions
 
 This README provides step-by-step instructions for testing the Hotel API and Room API endpoints using Postman or any other API testing tool.
@@ -23,7 +34,7 @@ This README provides step-by-step instructions for testing the Hotel API and Roo
 ### 2. Get Specific Hotel
 
 -   **Method**: GET
--   **URL**: `{{baseUrl}}/hotel/luxury-suite-downtown` (replace with an actual hotel slug)
+-   **URL**: `{{baseUrl}}/hotel/luxury-suite-downtown` (replace with any other hotel slug)
 -   **Expected Response**: 200 OK with the hotel object, including its rooms
 
 ### 3. Create New Hotel
@@ -50,8 +61,8 @@ This README provides step-by-step instructions for testing the Hotel API and Roo
       "longitude": -74.0060
     }
 
-    # Room API Testing Instructions
     ```
+# Room API Testing Instructions
 
 This guide provides step-by-step instructions for testing the Room API endpoints using Postman or any other API testing tool.
 
