@@ -36,12 +36,14 @@ This README provides step-by-step instructions for testing the Hotel API and Roo
 
 - **Method**: GET
 - **URL**: `{{baseUrl}}/hotel`
+- **Example**: `{{baseUrl}}/hotel`
 - **Expected Response**: 200 OK with an array of hotel objects
 
 ### 2. Get Specific Hotel
 
 - **Method**: GET
-- **URL**: `{{baseUrl}}/hotel/luxury-suite-downtown` (replace with any other hotel slug)
+- **URL**: `{{baseUrl}}/hotel/:hotel-slug` (replace with any other hotel slug)
+- **Example**: `{{baseUrl}}/hotel/luxury-suite-downtown`
 - **Expected Response**: 200 OK with the hotel object, including its rooms
 
 ### 3. Create New Hotel
@@ -94,7 +96,7 @@ This guide provides step-by-step instructions for testing the Room API endpoints
 
 - **Method**: GET
 - **URL**: `{{baseUrl}}/hotel/:hotelSlug/room/:roomSlug`
-- **Example**: `{{baseUrl}}/hotel/luxury-suite-downtown/room/deluxe-king`
+- **Example**: `{{baseUrl}}/hotel/luxury-suite-downtown/room/master-bedroom`
 - **Expected Response**: 200 OK with the room object
 
 ### 3. Create New Room
