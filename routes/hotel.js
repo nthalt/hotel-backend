@@ -1,15 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const { Pool } = require("pg");
-require("dotenv").config();
+const config = require("../config.json");
+const pool = new Pool(config.database);
+// require("dotenv").config();
 
-const pool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
-});
+// const pool = new Pool({
+//     user: process.env.DB_USER,
+//     host: process.env.DB_HOST,
+//     database: process.env.DB_NAME,
+//     password: process.env.DB_PASSWORD,
+//     port: process.env.DB_PORT,
+// });
 
 router.get("/hotel/:slug", async (req, res) => {
     try {
@@ -60,6 +62,57 @@ router.get("/hotels", async (req, res) => {
         res.status(200).json(result.rows);
     } catch (error) {
         console.error("Error fetching hotels:", error);
+        res.status(500).json({
+            message: "Internal server error",
+            error: error.message,
+        });
+    }
+});
+
+router.post("/hotel", async (req, res) => {
+    try {
+        const {
+            slug,
+            images,
+            title,
+            description,
+            guest_count,
+            bedroom_count,
+            bathroom_count,
+            amenities,
+            host_information,
+            address,
+            latitude,
+            longitude,
+        } = req.body;
+
+        const insertQuery = `
+      INSERT INTO hotel_details 
+      (slug, images, title, description, guest_count, bedroom_count, bathroom_count, amenities, host_information, address, latitude, longitude)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+      RETURNING *
+    `;
+
+        const values = [
+            slug,
+            images,
+            title,
+            description,
+            guest_count,
+            bedroom_count,
+            bathroom_count,
+            amenities,
+            JSON.stringify(host_information),
+            address,
+            latitude,
+            longitude,
+        ];
+
+        const result = await pool.query(insertQuery, values);
+
+        res.status(201).json(result.rows[0]);
+    } catch (error) {
+        console.error("Error creating hotel:", error);
         res.status(500).json({
             message: "Internal server error",
             error: error.message,

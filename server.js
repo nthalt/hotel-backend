@@ -1,9 +1,11 @@
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
-
+const config = require("./config.json");
 const app = express();
-const port = process.env.PORT || 3000;
+const port = config.server.port || 3000;
+// require("dotenv").config();
+// const app = express();
+// const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
