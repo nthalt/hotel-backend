@@ -120,4 +120,61 @@ router.post("/hotel", async (req, res) => {
     }
 });
 
+router.put("/hotel/:slug", async (req, res) => {
+    try {
+        const { slug } = req.params;
+        const {
+            images,
+            title,
+            description,
+            guest_count,
+            bedroom_count,
+            bathroom_count,
+            amenities,
+            host_information,
+            address,
+            latitude,
+            longitude,
+        } = req.body;
+
+        const updateQuery = `
+    UPDATE hotel_details 
+    SET images = $1, title = $2, description = $3, guest_count = $4, 
+        bedroom_count = $5, bathroom_count = $6, amenities = $7, 
+        host_information = $8, address = $9, latitude = $10, longitude = $11
+    WHERE slug = $12
+    RETURNING *
+  `;
+
+        const values = [
+            images,
+            title,
+            description,
+            guest_count,
+            bedroom_count,
+            bathroom_count,
+            amenities,
+            JSON.stringify(host_information),
+            address,
+            latitude,
+            longitude,
+            slug,
+        ];
+
+        const result = await pool.query(updateQuery, values);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "Hotel not found" });
+        }
+
+        res.status(200).json(result.rows[0]);
+    } catch (error) {
+        console.error("Error updating hotel:", error);
+        res.status(500).json({
+            message: "Internal server error",
+            error: error.message,
+        });
+    }
+});
+
 module.exports = router;
