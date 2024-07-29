@@ -177,4 +177,26 @@ router.put("/hotel/:slug", async (req, res) => {
     }
 });
 
+router.delete("/hotel/:slug", async (req, res) => {
+    try {
+        const { slug } = req.params;
+
+        const deleteQuery =
+            "DELETE FROM hotel_details WHERE slug = $1 RETURNING *";
+        const result = await pool.query(deleteQuery, [slug]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "Hotel not found" });
+        }
+
+        res.status(200).json({ message: "Hotel deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting hotel:", error);
+        res.status(500).json({
+            message: "Internal server error",
+            error: error.message,
+        });
+    }
+});
+
 module.exports = router;
