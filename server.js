@@ -21,24 +21,24 @@ app.use("/images", express.static("public/images"));
 
 // Simple test route
 app.get("/api/test", (req, res) => {
-    res.json({ message: "Test endpoint working" });
+  res.json({ message: "Test endpoint working" });
 });
 
 // 404 handler for unknown routes
 app.use((req, res) => {
-    res.status(404).json({ message: "Not Found" });
+  res.status(404).json({ message: "Not Found" });
 });
 
 // Global error handler
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({
-        message: "Internal Server Error",
-        error: process.env.NODE_ENV === "production" ? {} : err.message,
-    });
+  console.error(err.stack);
+  res.status(500).json({
+    message: "Internal Server Error",
+    error: process.env.NODE_ENV === "production" ? {} : err.message,
+  });
 });
 
 // Start the server
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });

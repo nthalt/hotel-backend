@@ -18,6 +18,16 @@ npm install
 
 Create a file named `config.json` in project root and copy your own configuration values into it according to the format provided in `config.example.json`
 
+```bash
+cp config.example.json config.json
+```
+
+# Run the project
+
+```bash
+npm run dev
+```
+
 # Hotel API Testing Instructions
 
 This README provides step-by-step instructions for testing the Hotel API and Room API endpoints using Postman or any other API testing tool.
